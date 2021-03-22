@@ -23,22 +23,24 @@ if __name__ == "__main__":
 
     args = parse_args()
 
-    # Download & rename Clip
-    os.system('youtube-dl {}'.format(args.url))
-    os.system('mv *.mkv clip.mkv')
+    # Download making sure it'll be mp4 & rename Clip
+    os.system('youtube-dl {} --recode-video mp4'.format(args.url))
+    os.system('mv *.mp4 clip.mp4')
 
-    # Convert mkv (movie) to mp3 & split to save RAM
+    # Convert mp4 (movie) to mp3 & split to save RAM
+    # Note: YT Downloand also allows for downloading only mp3
     clip_paths = []
 
-    for i in range(args.start, args.end, 10):
-        clip = mp.VideoFileClip("clip.mkv")
-        end = min(clip.duration, i+10)
-        clip = clip.subclip(i,end)
+    clip = mp.VideoFileClip("clip.mp4")
+    end = min(clip.duration, args.end)
 
-        clip.audio.write_audiofile("audio_" + str(i) + ".mp3")
-        clip_paths.append("audio_" + str(i) + ".mp3")
+    for i in range(args.start, int(end), 10):
+      sub_end = min(i+10, end)
+      sub_clip = clip.subclip(i,sub_end)
 
-    
+      sub_clip.audio.write_audiofile("audio_" + str(i) + ".mp3")
+      clip_paths.append("audio_" + str(i) + ".mp3")
+
     # Generate CC
     tokenizer = Wav2Vec2Tokenizer.from_pretrained("facebook/wav2vec2-base-960h")
     model = Wav2Vec2ForCTC.from_pretrained("facebook/wav2vec2-base-960h")
@@ -58,5 +60,10 @@ if __name__ == "__main__":
 
         cc += transcription + "  "
 
-    # Output CC - Can also write to a .txt if needed
-    print(cc)    
+    # Output CC & clean up - Can also write to a .txt if needed
+    print('-'*50)
+    print(cc)   
+    print('-'*50) 
+
+    os.system('rm *.mp4')
+    os.system('rm -r *.mp3')
