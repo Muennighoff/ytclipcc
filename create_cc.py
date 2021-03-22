@@ -58,7 +58,7 @@ if __name__ == "__main__":
         predicted_ids = torch.argmax(logits, dim=-1)
         transcription = tokenizer.batch_decode(predicted_ids)[0]
 
-        cc += transcription + "  "
+        cc += transcription + " "
 
     # Output CC & clean up - Can also write to a .txt if needed
     print('-'*50)
