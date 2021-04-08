@@ -53,9 +53,11 @@ if __name__ == "__main__":
                                     sr=16000)
 
         input_values = tokenizer(input_audio, return_tensors="pt", padding="longest").input_values
-
-        logits = model(input_values).logits
-        predicted_ids = torch.argmax(logits, dim=-1)
+        
+        with torch.no_grad():
+            logits = model(input_values).logits
+            predicted_ids = torch.argmax(logits, dim=-1)
+            
         transcription = tokenizer.batch_decode(predicted_ids)[0]
 
         cc += transcription + " "
