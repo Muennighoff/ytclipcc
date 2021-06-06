@@ -2,6 +2,4 @@ youtube_dl==2021.3.14
 transformers==4.4.2
 moviepy==0.2.3.5
 librosa==0.8.0
-torch==1.8.0+cu101
-
-
+torch==1.8.0
