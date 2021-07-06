@@ -3,7 +3,8 @@
 ## Youtube Clip CCs
 
 Quickly generate closed captions for youtube clips. 
-This simple repo makes use of Facebooks Wav2Vec model to generate English Subtitles / Captions for a YT Clip.
+This simple repo makes use of Facebooks Wav2Vec2 model to generate English Subtitles / Captions for a YT Clip.
+The notebook is now also part of huggingface's community notebooks and can be found here: https://huggingface.co/transformers/master/community.html#community-notebooks
 
 ## Usage
 
